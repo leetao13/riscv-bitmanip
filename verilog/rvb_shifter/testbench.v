@@ -19,8 +19,8 @@ module testbench;
 	localparam integer NUM_TESTS = 1000;
 
 	initial begin
-		// $dumpfile("testbench.vcd");
-		// $dumpvars(0, testbench);
+		 $dumpfile("testbench.vcd");
+		 $dumpvars(0, testbench);
 	end
 
 `ifdef ENABLE_64BIT
@@ -48,7 +48,7 @@ module testbench;
 	always @(posedge clock) reset <= 0;
 
 	reg [32+64+64+64+64-1:0] testdata [0:999];
-	initial $readmemh(`TESTDATA, testdata);
+	initial $readmemh("testdata_0.hex", testdata);
 
 	wire din_valid = 1;
 	wire dout_ready = 1;
@@ -101,7 +101,7 @@ module testbench;
 	always @(posedge clock) begin
 		if (!reset && index < 1000) begin
 			$display("%s: idx=%03d insn=0x%08x rs1=0x%016x rs2=0x%016x rs3=0x%016x rd=0x%016x expected=0x%016x %-s",
-					`TESTDATA, index, check_insn, din_rs1, din_rs2, din_rs3, dout_rd, check_rd,
+					"testdata_0.hex", index, check_insn, din_rs1, din_rs2, din_rs3, dout_rd, check_rd,
 					dout_rd !== check_rd ? "ERROR" : "OK");
 			if (dout_rd !== check_rd) $stop;
 		end
